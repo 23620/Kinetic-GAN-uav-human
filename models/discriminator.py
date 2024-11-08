@@ -6,6 +6,7 @@ from torch.autograd import Variable
 from .init_gan.tgcn import ConvTemporalGraphical
 from .init_gan.graph_ntu import graph_ntu
 from .init_gan.graph_h36m import Graph_h36m
+from .init_gan.graph_uav_human import graph_uav_human
 import numpy as np
 
 
@@ -15,7 +16,8 @@ class Discriminator(nn.Module):
         super().__init__()
 
         # load graph
-        self.graph = graph_ntu() if dataset == 'ntu' else Graph_h36m()
+        #self.graph = graph_ntu() if dataset == 'ntu' else Graph_h36m()
+        self.graph = graph_uav_human()
         self.A = [torch.tensor(Al, dtype=torch.float32, requires_grad=False).cuda() for Al in self.graph.As]
 
         # build networks

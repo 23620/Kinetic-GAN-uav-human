@@ -58,6 +58,8 @@ class ConvTemporalGraphical(nn.Module):
     def forward(self, x, A):
         assert A.size(0) == self.kernel_size
 
+        
+
         x = self.conv(x)
 
         n, kc, t, v = x.size()

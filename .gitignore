@@ -1,0 +1,9 @@
+# env
+myenv
+data_c
+
+#pyc
+*.pyc
+
+#uav-human-gan
+runs
