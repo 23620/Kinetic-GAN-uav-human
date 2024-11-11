@@ -39,6 +39,10 @@ class Feeder(Dataset):
         self.bone = bone
         self.vel = vel
 
+        self.norm = True
+
+        self.classes = [0]
+
         # 加载数据
         self.load_data()
 
@@ -46,6 +50,11 @@ class Feeder(Dataset):
         # 加载 npy 格式的数据
         self.data = np.load(self.data_path, allow_pickle=True)
         self.label = np.load(self.label_path, allow_pickle=True)
+
+        tmp = self.label[np.where(np.isin(self.label, self.classes))]
+        self.data  = self.data[np.where(np.isin(self.label, self.classes))]
+        self.label = np.nonzero(tmp[:, None] == self.classes)[1]
+
         self.sample_name = ['sample_' + str(i) for i in range(len(self.data))]
         
         # 获取最大最小值以便后续标准化使用
@@ -59,11 +68,15 @@ class Feeder(Dataset):
         data_numpy = self.data[idx]  # (C, T, V, M)
         label = self.label[idx]
 
+        if len(data_numpy.shape) == 3:
+            data_numpy = np.expand_dims(data_numpy, axis=3);
+            #print(data_numpy.shape);
+
         # 计算有效帧数 (非零帧)
         valid_frame_num = np.sum(data_numpy.sum(0).sum(-1).sum(-1) != 0)
         if valid_frame_num == 0:
             # 如果没有有效帧，返回全零张量
-            return np.zeros((3, self.window_size, 17, 1)), label
+            return np.zeros((3, self.window_size, 17)), label
 
         # 对有效帧进行裁剪并缩放到指定窗口大小
         data_numpy = tools.valid_crop_resize(data_numpy, valid_frame_num, self.p_interval, self.window_size)
@@ -84,6 +97,7 @@ class Feeder(Dataset):
         data_numpy = data_numpy - np.tile(data_numpy[:, :, 0:1, :], (1, 1, data_numpy.shape[2], 1))
 
         data_numpy = data_numpy[:,:,:,0]
+        data_numpy = 2 * ((data_numpy-self.min)/(self.max - self.min)) - 1 if self.norm else data_numpy
 
         # 返回数据
         #print("data_numpy.shape:", data_numpy.shape)

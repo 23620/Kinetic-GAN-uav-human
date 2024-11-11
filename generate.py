@@ -34,7 +34,7 @@ parser.add_argument("--latent_dim", type=int, default=512, help="演化空间的
 parser.add_argument("--mlp_dim", type=int, default=4, help="映射网络深度")
 parser.add_argument("--n_classes", type=int, default=155, help="数据集的类别数")  # 修改为 UAV-Human 的类别数
 parser.add_argument("--label", type=int, default=-1, help="指定要生成的类别，-1 代表所有类别")
-parser.add_argument("--t_size", type=int, default=64, help="每个时间维度的大小")
+parser.add_argument("--t_size", type=int, default=300, help="每个时间维度的大小")
 parser.add_argument("--v_size", type=int, default=17, help="每个空间维度的大小（顶点）")  # 修改为 UAV-Human 的节点数
 parser.add_argument("--channels", type=int, default=3, help="通道数（坐标维度）")
 parser.add_argument("--dataset", type=str, default="uav-human", help="数据集")

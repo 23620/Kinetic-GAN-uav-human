@@ -65,8 +65,8 @@ def get_activations(path, labels, model, batch_size=50, dims=2048, device='cpu',
     """
     model.eval()
 
-    dataset = Feeder(path, labels, norm=norm, classes=classe, dataset='ntu')
-    print(dataset.classes)
+    dataset = Feeder(path, labels)
+    #print(dataset.classes)
     print(len(dataset))
 
     # Configure data loader

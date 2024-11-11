@@ -1,9 +1,9 @@
 # env
-myenv
-data_c
-
+myenv/
+data_c/
+env/
 #pyc
-*.pyc
+
 
 #uav-human-gan
 runs
